@@ -44,12 +44,17 @@ module: {
 
   },
   
-  plugins: [
-      new HtmlWebpackPlugin({
-    template: './src/index.html' // путь к файлу index.html
-  }),
-   new CleanWebpackPlugin(), 
-    new MiniCssExtractPlugin()
-] // добавьте массив
-}
-// module.exports — это синтаксис экспорта в Node.js 
+plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+  ],
+  resolve: {
+    extensions: ['.js', '.css'],
+  },
+};
+
