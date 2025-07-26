@@ -27,3 +27,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.popup_type_delete-card .popup__content  {
+    min-height: auto; 
+    padding: 36px
+}
+.popup_type_delete-card .popup__title {
+  margin-bottom: 38px;
+}

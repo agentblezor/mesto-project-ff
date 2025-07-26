@@ -20,3 +20,23 @@
     margin-right: 0;
   }
 }
+
+.profile__image {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.profile__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5) var(--edit-icon) no-repeat center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.profile__image:hover::after {
+  opacity: 1;
+}

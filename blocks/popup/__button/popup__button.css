@@ -25,3 +25,12 @@
     line-height: 17px;
   }
 }
+
+.popup__button_inactive {
+  opacity: 0.15;
+  cursor: default;
+  pointer-events: none;
+  border: 1px solid black;
+  color: black;
+  background: white;
+}
