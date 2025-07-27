@@ -1,19 +1,16 @@
 import { likeCard, unlikeCard, deleteCard } from './api.js';
-import { openPopup } from './modal.js';
-
-let cardToDelete = null; // глобальная переменная
 
 // Лайк карточки
 export function handleLike(likeButton, likeCount, cardId) {
   const isLiked = likeButton.classList.contains('card__like-button_is-active');
   const action = isLiked ? unlikeCard : likeCard;
 
-  action(cardId)
+  return action(cardId)
     .then((updatedCard) => {
       likeCount.textContent = updatedCard.likes.length;
       likeButton.classList.toggle('card__like-button_is-active');
     })
-    .catch(err => console.error(`Ошибка лайка: ${err}`));
+    .catch((err) => console.error(`Ошибка лайка: ${err}`));
 }
 
 // Создание карточки
@@ -32,14 +29,14 @@ export function createCard(cardData, handleDelete, handleLike, handleImageClick,
   cardTitle.textContent = cardData.name;
   likeCount.textContent = cardData.likes.length;
 
-  // Удаление только для своих карточек
+  // Кнопка удаления только для своих карточек
   if (cardData.owner._id !== currentUserId) {
     deleteButton.remove();
   } else {
     deleteButton.addEventListener('click', () => handleDelete(cardElement, cardData._id));
   }
 
-  // Если пользователь лайкнул
+  // Если пользователь уже лайкнул
   if (cardData.likes.some(user => user._id === currentUserId)) {
     likeButton.classList.add('card__like-button_is-active');
   }
@@ -50,23 +47,19 @@ export function createCard(cardData, handleDelete, handleLike, handleImageClick,
   return cardElement;
 }
 
+// Удаление карточки (возвращает промис)
+export function confirmDelete(cardId) {
+  return deleteCard(cardId);
+}
+
+
 // Обработка удаления карточки
 export function handleDelete(cardElement, cardId) {
   cardToDelete = { element: cardElement, id: cardId };
   openPopup(document.querySelector('.popup_type_delete-card'));
 }
 
-// Функция для фактического удаления
-export function confirmDelete() {
-  if (cardToDelete) {
-        return deleteCard(cardToDelete.id)
-      .then(() => {
-        cardToDelete.element.remove();
-        cardToDelete = null;
-      });
-    }
-       return Promise.reject('Нет карточки для удаления');
-  }
+
 
 
 

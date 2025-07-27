@@ -15,11 +15,10 @@ function handleEscClose(evt) {
   }
 }
 
-// Закрытие попапа кликом по оверлею
-document.querySelectorAll('.popup').forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if (evt.target === popup) {
-      closePopup(popup);
-    }
-  });
-});
+
+
+
+export function handleDelete(cardElement, cardId) {
+  cardToDelete = { element: cardElement, id: cardId };
+  openPopup(document.querySelector('.popup_type_delete-card'));
+}

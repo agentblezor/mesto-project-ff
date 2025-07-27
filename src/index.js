@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import { clearValidation, enableValidation } from '../components/validation.js';
-import { createCard, handleDelete, handleLike, confirmDelete } from '../components/card.js';
+import { createCard, handleLike, confirmDelete } from '../components/card.js';
 import { openPopup, closePopup } from '../components/modal.js';
 import { getUserInfo, getInitialCards, updateUserInfo, addNewCard, updateAvatar } from '../components/api.js';
 
@@ -12,6 +12,14 @@ document.querySelector('.profile__image').style.setProperty(
   '--edit-icon',
   `url(${editIcon})`
 );
+
+let cardToDelete = null; // глобальная переменная
+
+// Функция вызова попапа подтверждения удаления
+export function handleDelete(cardElement, cardId) {
+  cardToDelete = { element: cardElement, id: cardId };
+  openPopup(document.querySelector('.popup_type_delete-card'));
+}
 
 // Элементы профиля
 const nameElement = document.querySelector('.profile__title');
@@ -161,13 +169,25 @@ const deleteCardForm = popupDeleteCard.querySelector('.popup__form');
 deleteCardForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  confirmDelete()
-    .then(() => {
-      closePopup(popupDeleteCard);
-    })
-    .catch((err) => console.error(`Ошибка удаления: ${err}`));
+  if (cardToDelete) {
+    confirmDelete(cardToDelete.id)
+      .then(() => {
+        cardToDelete.element.remove();
+        cardToDelete = null;
+        closePopup(popupDeleteCard);
+      })
+      .catch((err) => console.error(`Ошибка удаления: ${err}`));
+  }
 });
 
+// Закрытие попапа кликом по оверлею
+document.querySelectorAll('.popup').forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target === popup) {
+      closePopup(popup);
+    }
+  });
+});
 
 // Конфиг валидации
 const validationConfig = {
@@ -176,7 +196,7 @@ const validationConfig = {
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_inactive',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
+  errorClass: 'popup__input-error_active'
 };
 
 enableValidation(validationConfig);
