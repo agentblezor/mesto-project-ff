@@ -13,10 +13,10 @@ document.querySelector('.profile__image').style.setProperty(
   `url(${editIcon})`
 );
 
-let cardToDelete = null; // глобальная переменная
+let cardToDelete = null; // переменная для хранения удаляемой карточки
 
-// Функция вызова попапа подтверждения удаления
-export function handleDelete(cardElement, cardId) {
+// Обработчик удаления (открывает модальное окно)
+function handleDeleteClick(cardElement, cardId) {
   cardToDelete = { element: cardElement, id: cardId };
   openPopup(document.querySelector('.popup_type_delete-card'));
 }
@@ -36,7 +36,6 @@ function renderLoading(isLoading, buttonElement, initialText = 'Сохранит
 }
 
 // загрузка данных пользователя и карточек с сервера
-
 let currentUserId = '';
 
 Promise.all([getUserInfo(), getInitialCards()])
@@ -47,7 +46,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     avatarElement.style.backgroundImage = `url(${userData.avatar})`;
 
     cards.forEach((cardData) => {
-      const card = createCard(cardData, handleDelete, handleLike, handleImageClick, currentUserId);
+      const card = createCard(cardData, handleDeleteClick, handleLike, handleImageClick, currentUserId);
       placesList.append(card);
     });
   })
@@ -116,7 +115,7 @@ formAdd.addEventListener('submit', (evt) => {
 
   addNewCard(placeNameInput.value, urlInput.value)
     .then((cardData) => {
-      const newCard = createCard(cardData, handleDelete, handleLike, handleImageClick, currentUserId);
+      const newCard = createCard(cardData, handleDeleteClick, handleLike, handleImageClick, currentUserId);
       placesList.prepend(newCard);
       closePopup(popupNewCard);
     })
@@ -156,13 +155,14 @@ avatarForm.addEventListener('submit', (evt) => {
 
   updateAvatar(avatarInput.value)
     .then((userData) => {
-avatarElement.style.backgroundImage = `url(${userData.avatar})`;
+      avatarElement.style.backgroundImage = `url(${userData.avatar})`;
       closePopup(popupAvatar);
     })
     .catch((err) => console.error(err))
     .finally(() => renderLoading(false, submitButton));
 });
 
+// Попап удаления карточки
 const popupDeleteCard = document.querySelector('.popup_type_delete-card');
 const deleteCardForm = popupDeleteCard.querySelector('.popup__form');
 

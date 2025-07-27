@@ -53,11 +53,6 @@ export function confirmDelete(cardId) {
 }
 
 
-// Обработка удаления карточки
-export function handleDelete(cardElement, cardId) {
-  cardToDelete = { element: cardElement, id: cardId };
-  openPopup(document.querySelector('.popup_type_delete-card'));
-}
 
 
 
