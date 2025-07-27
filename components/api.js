@@ -46,11 +46,7 @@ export function addNewCard(name, link) {
     headers: config.headers,
     body: JSON.stringify({ name, link })
   }).then(checkResponse) 
-    .catch((err) => {
-      console.error(`Ошибка при добавлении карточки: ${err}`);
-      // Возвращаем объект, чтобы UI всё равно обновился
-      return { name, link, likes: [] };
-    });
+   
 }
 
 

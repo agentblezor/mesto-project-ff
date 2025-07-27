@@ -1,4 +1,4 @@
-import { likeCard, unlikeCard, deleteCard } from '../src/api.js';
+import { likeCard, unlikeCard, deleteCard } from './api.js';
 import { openPopup } from './modal.js';
 
 let cardToDelete = null; // глобальная переменная
@@ -59,14 +59,15 @@ export function handleDelete(cardElement, cardId) {
 // Функция для фактического удаления
 export function confirmDelete() {
   if (cardToDelete) {
-    deleteCard(cardToDelete.id)
+        return deleteCard(cardToDelete.id)
       .then(() => {
         cardToDelete.element.remove();
         cardToDelete = null;
-      })
-      .catch(err => console.error(`Ошибка удаления: ${err}`));
+      });
+    }
+       return Promise.reject('Нет карточки для удаления');
   }
-}
+
 
 
 
