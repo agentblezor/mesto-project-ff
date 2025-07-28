@@ -18,7 +18,3 @@ function handleEscClose(evt) {
 
 
 
-export function handleDelete(cardElement, cardId) {
-  cardToDelete = { element: cardElement, id: cardId };
-  openPopup(document.querySelector('.popup_type_delete-card'));
-}

@@ -13,6 +13,9 @@ document.querySelector('.profile__image').style.setProperty(
   `url(${editIcon})`
 );
 
+
+
+
 let cardToDelete = null; // переменная для хранения удаляемой карточки
 
 // Обработчик удаления (открывает модальное окно)
